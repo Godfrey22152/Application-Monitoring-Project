@@ -1,4 +1,4 @@
-# MonitoringMaster
+# Application Monitoring Project
 
 This project demonstrates the setup and usage of various monitoring tools using two virtual machines (VMs). The monitoring tools include Prometheus, Alertmanager, Grafana, Node Exporter, Blackbox Exporter, and cAdvisor. The project showcases the skills required to configure these tools, set up a monitoring environment, and visualize metrics.
 
