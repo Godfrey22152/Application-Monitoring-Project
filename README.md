@@ -150,8 +150,8 @@ Vagrant.configure("2") do |config|
 
 ### **Step 1: Clone the Repository**
 ```bash
-git clone <repository-url>
-cd <repository-directory>
+git clone https://github.com/Godfrey22152/Application-Monitoring-Project.git
+cd Application-Monitoring-Project
 ```
 ### **Step 2: Start the VMs and SSH into the VMs**
 
@@ -182,24 +182,39 @@ A detailed guide on steps to setup the monitoring tools and running the applicat
 ## Configuration Files
 The configuration files for Prometheus and Alertmanager are included in the project repository, See `<Infra-Steps-Setup.md>`file. These files should be placed in their respective directories on VM-1.
 
-## Project Screenshot Images
+## Project Screenshoot Images
 
+- **Flask Application Dashboard**
 ![Flask Application Dashboard](screenshots/Quiz-Game-App_Running_Application.png)
-![Prometheus Dashboard](screenshots/prometheus_dashboard.png)
-![Prometheus Targets](screenshots/prometheus_targets.png)
-![Prometheus Alerts](screenshots/prometheus_alerts.png)
+
+- **Prometheus Targets, Alerts and Dashboard**
+![Prometheus Dashboard](screenshots/Prometheus_dashboard.png)
+![Prometheus Targets](screenshots/Prometheus_targets.png)
+![Prometheus Alerts](screenshots/Prometheus_alerts.png)
+
+- **Node Exporter Dashboard**
 ![Node Exporter Dashboard](screenshots/Node-Exporter_dashboard.png)
+
+- **Alertmanager Dashboard**
 ![Alertmanager Dashboard](screenshots/alertmanager_dashboard.png)
+
+- **Blackbox Exporter Dashboard**
 ![Blackbox Exporter Dashboard](screenshots/Blackbox-Exporter-Setup.png)
+
+- **Google cAdvisor Dashboard**
 ![Google cAdvisor Dashboard](screenshots/cAdvisor-Container_Metrics-UI.png)
 ![Google cAdvisor Dashboard-2](screenshots/cAdvisor-Container_Metrics-UI_2.png)
 ![Google cAdvisor Dashboard-3](screenshots/cAdvisor-Container_Metrics-UI_3.png)
+
+- **Grafana Dashboards**
 ![Grafana Dashboard](screenshots/Grafana-Imported-Dashboard.png)
 ![Node-Exporter Grafana Dashboard](screenshots/Node-Exporter_Grafana_Dashboard.png)
-![Blackbox-Exporter Grafana Dashboard](screenshots/Blackbox-Exporter_Grafana_Dashboard.png)
+![Blackbox-Exporter Grafana Dashboard](screenshots/Blackbox-Exporter_Grafana_Dashboard_1.png)
 ![Blackbox-Exporter Grafana Dashboard-2](screenshots/Blackbox-Exporter_Grafana_Dashboard_2.png)
 ![Container and System Monitoring Grafana Dashboard](screenshots/container_grafana_dashboard.png)
 ![Container and System Monitoring Grafana Dashboard-2](screenshots/container_grafana_dashboard_2.png)
+
+- **Website-Up/Down Email Alert from Alertmanager**
 ![Website-Down Email Alert from Alertmanager](screenshots/email_alert.png)
 ![Website-Up Email Alert from Alertmanager](screenshots/email_alert_2.png)
 
