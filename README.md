@@ -168,7 +168,7 @@ vagrant ssh
 This command will grant you access into the both VMs.
 
 ### **Step 3: Setup the Application and Monitoring Tools**
-A detailed guide on steps to setup the monitoring tools and running the application is included project repository with name: `<Infra-Steps-Setup.md>`, kindly see file and follow the steps in the file to get the appliaction and monitoring tools running.
+A detailed guide on steps to setup the monitoring tools and running the application is included project repository with name: `<Infra-Steps-Setup.md>`, kindly see file and follow the steps in the file to get the application and monitoring tools running.
 
 ### **Step 4: Access the Application and Monitoring Tools**
 - **Prometheus:** Access Prometheus at `http://localhost:9090` or `http://<VM-IP>:9090`.
@@ -182,6 +182,7 @@ A detailed guide on steps to setup the monitoring tools and running the applicat
 ## Configuration Files
 The configuration files for Prometheus and Alertmanager are included in the project repository, See `<Infra-Steps-Setup.md>`file. These files should be placed in their respective directories on VM-1.
 
+---
 ## Project Screenshoot Images
 
 - **Flask Application Dashboard**
