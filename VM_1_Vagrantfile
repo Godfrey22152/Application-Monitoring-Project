@@ -1,0 +1,70 @@
+# Vagrantfile for setting up a local environment (Monitoring-Tools-VM)
+
+Vagrant.configure("2") do |config|
+    # Use Ubuntu 20.04 as the base box
+    config.vm.box = "ubuntu/jammy64"
+
+    # Port forwarding to access Prometheus on the browser.
+    config.vm.network "forwarded_port", guest: 9090, host: 9090
+    
+    # Port forwarding to access blackbox_exporter on the browser.
+    config.vm.network "forwarded_port", guest: 9115, host: 9115
+
+    # Port forwarding to access alertmanager on the browser.
+    config.vm.network "forwarded_port", guest: 9093, host: 9093 
+
+    # Port forwarding to access Grafana on the browser.
+    config.vm.network "forwarded_port", guest: 3000, host: 3000
+
+    # Configure a bridged network and automatically select the desired interface
+    config.vm.network "public_network", bridge: "Intel(R) Dual Band Wireless-AC 8260"
+
+    # Configure VM resources
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = "4096"
+      vb.cpus = 2
+    end
+  
+    # Provisioning script
+    config.vm.provision "shell", inline: <<-SHELL
+      # Update and install necessary packages
+      sudo apt-get update
+      sudo apt-get install wget
+      sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+  
+      # Install prometheus
+      wget https://github.com/prometheus/prometheus/releases/download/v2.53.1/prometheus-2.53.1.linux-amd64.tar.gz
+      tar -xvf prometheus-2.53.1.linux-amd64.tar.gz
+      sudo rm prometheus-2.53.1.linux-amd64.tar.gz
+      sudo mv prometheus-2.53.1.linux-amd64/ prometheus
+
+      # Create a directory for logging active queries and grant the Prometheus process permissions to write to this directory.
+      sudo mkdir -p /home/vagrant/prometheus/data
+      sudo chown -R vagrant:vagrant /home/vagrant/prometheus/data
+
+      # Install blackbox_exporter
+      wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-0.25.0.linux-amd64.tar.gz
+      tar -xvf blackbox_exporter-0.25.0.linux-amd64.tar.gz
+      sudo rm blackbox_exporter-0.25.0.linux-amd64.tar.gz
+      sudo mv blackbox_exporter-0.25.0.linux-amd64/ blackbox_exporter
+
+      # Install alertmanager
+      wget https://github.com/prometheus/alertmanager/releases/download/v0.27.0/alertmanager-0.27.0.linux-amd64.tar.gz
+      tar -xvf alertmanager-0.27.0.linux-amd64.tar.gz
+      sudo rm alertmanager-0.27.0.linux-amd64.tar.gz
+      sudo mv alertmanager-0.27.0.linux-amd64/ alertmanager
+      
+      # Create data directory for alertmanager and grant it permissions to write to it.
+      sudo mkdir -p alertmanager/data
+      sudo chown -R vagrant:vagrant alertmanager/data 
+
+      # Install Grafana
+      wget https://dl.grafana.com/oss/release/grafana-11.1.3.linux-amd64.tar.gz
+      tar -zxvf grafana-11.1.3.linux-amd64.tar.gz 
+      sudo rm grafana-11.1.3.linux-amd64.tar.gz
+
+
+    SHELL
+
+  end
+  
