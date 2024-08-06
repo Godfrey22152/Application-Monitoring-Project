@@ -1,0 +1,51 @@
+# Vagrantfile for setting up a local environment VM-2 (Application and Metrics)
+
+Vagrant.configure("2") do |config|
+    # Use Ubuntu 22.04 as the base box
+    config.vm.box = "ubuntu/jammy64"
+
+    # Configure a bridged network and automatically select the desired interface
+    config.vm.network "public_network", bridge: "Intel(R) Dual Band Wireless-AC 8260"
+
+    # Port forwarding to access Node-exporter on the browser.
+    config.vm.network "forwarded_port", guest: 9100, host: 9100
+
+    # Port forwarding to access PYTHON-Flask Application on the browser.
+    config.vm.network "forwarded_port", guest: 5000, host: 5000
+
+    # Port forwarding to access cAdvisor Metrics on the browser.
+    config.vm.network "forwarded_port", guest: 8080, host: 8081
+      
+    # Configure VM resources
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = "4096"
+      vb.cpus = 2
+    end
+      
+    # Provisioning script
+    config.vm.provision "shell", inline: <<-SHELL
+      # Update and install necessary packages
+      sudo apt-get update -y
+      sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+  
+      # Install Docker
+      sudo apt-get install -y docker.io
+      sudo systemctl start docker
+      sudo systemctl enable docker
+      sudo chmod 666 /var/run/docker.sock
+  
+      # Install node_exporter 
+      wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz
+      tar -xvf node_exporter-1.8.2.linux-amd64.tar.gz
+      sudo rm node_exporter-1.8.2.linux-amd64.tar.gz
+      sudo mv node_exporter-1.8.2.linux-amd64/ node_exporter
+      sudo mv node_exporter/node_exporter /usr/local/bin/
+
+      # Clone Application Repository
+      git clone https://github.com/Godfrey22152/quiz_game_app.git
+
+
+    SHELL
+  
+  end
+  
