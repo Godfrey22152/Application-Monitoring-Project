@@ -1,3 +1,4 @@
+#To BE PLACED IN ALERTMANAGER DIRECTORY IN VM-1
 route:
   group_by: ['alertname']             # Group by alert name
   group_wait: 30s                     # Wait time before sending the first notification
