@@ -437,4 +437,4 @@ This dashboard provides detailed metrics on your containers, such as CPU, memory
 
 ---
 
-This documentation provides a detailed explanation of your Prometheus and Alertmanager configuration files. It covers global settings, alert rules, email notifications, and inhibition rules.
+This documentation provides a detailed explanation of the Prometheus and Alertmanager configuration files. It covers global settings, alert rules, email notifications, and inhibition rules.
