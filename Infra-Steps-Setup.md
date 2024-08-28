@@ -5,6 +5,7 @@
 - Ensure you have `wget` and `tar` installed on both VMs.
 - Ensure you have appropriate permissions to download, extract, and run these binaries.
 - Replace `<version>` with the appropriate version number you wish to download.
+- NOTE: Ensure your check the vagrantfiles for both VMs and the tools already installed by the vagrantfiles so you don't repeat the installation.
 
 #### VM-1 (Application, Node Exporter, google/cadvisor)
 
