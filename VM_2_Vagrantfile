@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
     config.vm.network "forwarded_port", guest: 5000, host: 5000
 
     # Port forwarding to access cAdvisor Metrics on the browser.
-    config.vm.network "forwarded_port", guest: 8080, host: 8081
+    config.vm.network "forwarded_port", guest: 8080, host: 8080
       
     # Configure VM resources
     config.vm.provider "virtualbox" do |vb|
