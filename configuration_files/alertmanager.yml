@@ -7,11 +7,11 @@ route:
   receiver: 'email-notifications'     # Default receiver
 
 receivers:
-- name: 'email-notifications'         # Receiver name
+- name: 'email-notifications'                   # Receiver name
   email_configs:
-  - to: your_email@gmail.com       # Email recipient
-    from: monitoringemail@gmail.com              # Email sender
-    smarthost: smtp.gmail.com:587     # SMTP server
+  - to: your_email@gmail.com                    # Email recipient
+    from: monitoringProject@gmail.com           # Email sender
+    smarthost: smtp.gmail.com:587               # SMTP server
     auth_username: your_email@gmail.com         # SMTP auth username
     auth_identity: your_email@gmail.com         # SMTP auth identity
     auth_password: "wxgd dzcs ehkb ivkc"  # SMTP auth password
