@@ -112,7 +112,7 @@ Vagrant.configure("2") do |config|
     config.vm.network "forwarded_port", guest: 5000, host: 5000
 
     # Port forwarding to access cAdvisor Metrics on the browser.
-    config.vm.network "forwarded_port", guest: 8080, host: 8081
+    config.vm.network "forwarded_port", guest: 8080, host: 8080
       
     # Configure VM resources
     config.vm.provider "virtualbox" do |vb|
@@ -176,7 +176,7 @@ A detailed guide on steps to setup the monitoring tools and running the applicat
 - **Grafana:** Access Grafana at `http://localhost:3000` or `http://<VM-IP>:3000`.
 - **Node Exporter:** Access Node Exporter at `http://localhost:9100` or `http://<VM-IP>:9100`.
 - **Blackbox Exporter:** Access Blackbox Exporter at `http://localhost:9115` or `http://<VM-IP>:9115`.
-- **cAdvisor:** Access cAdvisor at `http://localhost:8081` or `http://<VM-IP>:8081`.
+- **cAdvisor:** Access cAdvisor at `http://localhost:8080` or `http://<VM-IP>:8080`.
 - **Flask Application:** Access the Flask application at `http://localhost:5000` or `http://<VM-IP>:5000`.
 
 ## Configuration Files
