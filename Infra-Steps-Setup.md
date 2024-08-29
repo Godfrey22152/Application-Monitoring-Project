@@ -5,30 +5,31 @@
 - Ensure you have `wget` and `tar` installed on both VMs.
 - Ensure you have appropriate permissions to download, extract, and run these binaries.
 - Replace `<version>` with the appropriate version number you wish to download.
-**NOTE: Ensure you check the vagrantfiles for both VMs and the tools already installed by the vagrantfiles so you don't repeat the installation. ( If you already ran the vagrantfiles to setup the environments and install tools for both VMs, kindly skip already performed tasks in the vagrantfiles).**
+- **NOTE: Ensure you check the vagrantfiles for both VMs and the tools already installed by the vagrantfiles so you don't repeat the installation. ( If you already ran the vagrantfiles to setup the environments and install tools for both VMs, kindly skip already performed tasks in the vagrantfiles).**
 
-#### VM-2 (Application, Node Exporter, google/cadvisor)
+
+#### **VM-2 (Application, Node Exporter, google/cadvisor)**
 
 ##### Application
 1. **Clone Application Repository**
-```bash
-git clone https://github.com/Godfrey22152/quiz_game_app.git 
-cd quiz_game_app/
-```
+   ```bash
+   git clone https://github.com/Godfrey22152/quiz_game_app.git 
+   cd quiz_game_app/
+   ```
 2. **Build Image and Run Container**
 Build your own image from the Dockerfile, run the image but ensure you provide the required details for the <.env> file:
-```bash
-docker build -t quiz-app .
-```
+   ```bash
+   docker build -t quiz-app .
+   ```
 Or use already built image from Dockerhub, you can run the image as shown below:
-```bash
-docker run -d --name=quiz-app -p 5000:5000 godfrey22152/quiz-game-app:2.0
-```
+   ```bash
+   docker run -d --name=quiz-app -p 5000:5000 godfrey22152/quiz-game-app:2.0
+   ```
 3. **Access running Application**
 Access running Application on the browser on `http://localhost:5000/` or `http://<YOUR-VM-IP>:5000/`.
 
-##### Node Exporter
-**Note: Steps 1-3 already done using the VM_2_Vagrantfile.**
+##### **Node Exporter**
+ - **Note: Steps 1-3 already done using the VM_2_Vagrantfile.**
 
 1. **Download Node Exporter**
    ```bash
@@ -46,40 +47,42 @@ Access running Application on the browser on `http://localhost:5000/` or `http:/
    ```
    
 4. **Create a systemd service file for Node Exporter**
-  ```bash
+   ```bash
    sudo nano /etc/systemd/system/node_exporter.service
-```
+   ```
 
-Add the following content:
-```bash
-   [Unit]
-   Description=Node Exporter
-   Wants=network-online.target
-   After=network-online.target
+   **Add the following content to the systemd service file `/etc/systemd/system/node_exporter.service`:**
+   ```bash
+      [Unit]
+      Description=Node Exporter
+      Wants=network-online.target
+      After=network-online.target
 
-   [Service]
-   User=node_exporter
-   ExecStart=/usr/local/bin/node_exporter
+      [Service]
+      User=node_exporter
+      ExecStart=/usr/local/bin/node_exporter
 
-   [Install]
-   WantedBy=default.target
-```
+      [Install]
+      WantedBy=default.target
+   ```
 
 5. **Create a user for Node Exporter**
-```bash
+   ```bash
    sudo useradd -rs /bin/false node_exporter
-```
+   ```
 
 6. **Reload systemd and start Node Exporter**
-```bash
+   ```bash
    sudo systemctl daemon-reload
    sudo systemctl start node_exporter
    sudo systemctl enable node_exporter
-```
+   ```
+   
 7. **Access Node Exporter**
 Access running node exporter on the browser on `http://localhost:9100/` or `http://<YOUR-VM-IP>:9100/`.
 
-##### Google/cadvisor
+
+##### **Google/cadvisor**
 1. **Running cAdvisor in a Docker Container**
 cAdvisor (Container Advisor) provides container users an understanding of the resource usage and performance characteristics of their running containers. It is a running daemon that collects, aggregates, processes, and exports information about running containers. Specifically, for each container it keeps resource isolation parameters, historical resource usage, histograms of complete historical resource usage and network statistics. This data is exported by container and machine-wide. You can run a single cAdvisor to monitor the whole machine. Simply run:
 
@@ -102,9 +105,10 @@ sudo docker run \
 2. **Access Running cAdvisor on your browser**
 cAdvisor is now running (in the background) on `http://localhost:8080` or `http://<Your-VM-IP>:8080`. 
 
-#### VM-1 (Prometheus, Alertmanager, Blackbox Exporter, Grafana)
 
-##### Prometheus     
+#### **VM-1 (Prometheus, Alertmanager, Blackbox Exporter, Grafana)**
+
+##### **Prometheus**     
 1. **Download Prometheus**
    ```bash
    wget https://github.com/prometheus/prometheus/releases/download/v2.53.1/prometheus-2.53.1.linux-amd64.tar.gz
@@ -138,7 +142,7 @@ cAdvisor is now running (in the background) on `http://localhost:8080` or `http:
    ./prometheus --config.file=prometheus.yml &
    ```
       
-##### Alertmanager
+##### **Alertmanager**
 1. **Download Alertmanager**
    ```bash
    wget https://github.com/prometheus/alertmanager/releases/download/v0.27.0/alertmanager-0.27.0.linux-amd64.tar.gz
@@ -171,7 +175,7 @@ cAdvisor is now running (in the background) on `http://localhost:8080` or `http:
    ./alertmanager --config.file=alertmanager.yml &
    ```
 
-##### Blackbox Exporter
+##### **Blackbox Exporter**
 1. **Download Blackbox Exporter**
    ```bash
    wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-0.25.0.linux- 
@@ -199,7 +203,7 @@ cAdvisor is now running (in the background) on `http://localhost:8080` or `http:
    ./blackbox_exporter &
    ```
 
-##### Grafana
+##### **Grafana**
 1. **Download Grafana**
    ```bash
    wget https://dl.grafana.com/oss/release/grafana-11.1.3.linux-amd64.tar.gz
@@ -407,15 +411,15 @@ route:
   receiver: 'email-notifications'     # Default receiver
 
 receivers:
-- name: 'email-notifications'         # Receiver name
+- name: 'email-notifications'             # Receiver name
   email_configs:
-  - to: godfreyifeanyi450@gmail.com       # Email recipient
-    from: monitoringProject@gmail.com              # Email sender
-    smarthost: smtp.gmail.com:587     # SMTP server
-    auth_username: your_email          # SMTP auth username    
-    auth_identity: your_email          # SMTP auth identity    
+  - to: your_email@gmail.com              # Email recipient
+    from: monitoringProject@gmail.com     # Email sender
+    smarthost: smtp.gmail.com:587         # SMTP server
+    auth_username: your_email             # SMTP auth username    
+    auth_identity: your_email             # SMTP auth identity    
     auth_password: "wxgd dzcs ehkb ivkc"  # SMTP auth password
-    send_resolved: true               # Send notifications for resolved alerts
+    send_resolved: true                   # Send notifications for resolved alerts
 ```
 
 ### Inhibition Rules
