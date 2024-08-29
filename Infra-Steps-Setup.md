@@ -5,9 +5,9 @@
 - Ensure you have `wget` and `tar` installed on both VMs.
 - Ensure you have appropriate permissions to download, extract, and run these binaries.
 - Replace `<version>` with the appropriate version number you wish to download.
-- NOTE: Ensure your check the vagrantfiles for both VMs and the tools already installed by the vagrantfiles so you don't repeat the installation.
+**NOTE: Ensure you check the vagrantfiles for both VMs and the tools already installed by the vagrantfiles so you don't repeat the installation. ( If you already ran the vagrantfiles to setup the environments and install tools for both VMs, kindly skip already performed tasks in the vagrantfiles).**
 
-#### VM-1 (Application, Node Exporter, google/cadvisor)
+#### VM-2 (Application, Node Exporter, google/cadvisor)
 
 ##### Application
 1. **Clone Application Repository**
@@ -28,6 +28,8 @@ docker run -d --name=quiz-app -p 5000:5000 godfrey22152/quiz-game-app:2.0
 Access running Application on the browser on `http://localhost:5000/` or `http://<YOUR-VM-IP>:5000/`.
 
 ##### Node Exporter
+**Note: Steps 1-3 already done using the VM_2_Vagrantfile.**
+
 1. **Download Node Exporter**
    ```bash
    wget https://github.com/prometheus/node_exporter/releases/download/v1.8.1/node_exporter-1.8.1.linux-amd64.tar.gz
@@ -42,7 +44,7 @@ Access running Application on the browser on `http://localhost:5000/` or `http:/
    ```bash
    sudo mv node_exporter/node_exporter /usr/local/bin/
    ```
-
+   
 4. **Create a systemd service file for Node Exporter**
   ```bash
    sudo nano /etc/systemd/system/node_exporter.service
@@ -100,25 +102,42 @@ sudo docker run \
 2. **Access Running cAdvisor on your browser**
 cAdvisor is now running (in the background) on `http://localhost:8080` or `http://<Your-VM-IP>:8080`. 
 
-#### VM-2 (Prometheus, Alertmanager, Blackbox Exporter, Grafana)
+#### VM-1 (Prometheus, Alertmanager, Blackbox Exporter, Grafana)
 
-##### Prometheus
+##### Prometheus     
 1. **Download Prometheus**
    ```bash
-   wget https://github.com/prometheus/prometheus/releases/download/v2.52.0/prometheus-2.52.0.linux-amd64.tar.gz
+   wget https://github.com/prometheus/prometheus/releases/download/v2.53.1/prometheus-2.53.1.linux-amd64.tar.gz
    ```
-
+      
 2. **Extract Prometheus**
    ```bash
-   tar xvfz prometheus-2.52.0.linux-amd64.tar.gz
+   tar xvfz prometheus-2.53.1.linux-amd64.tar.gz
+   ```
+   
+3. **Remove the downloaded tarball to clean up disk space**
+   ```bash
+   sudo rm prometheus-2.53.1.linux-amd64.tar.gz
+   ```
+   
+4. **Rename the extracted directory to 'prometheus' for easier access**
+   ```bash
+   sudo mv prometheus-2.53.1.linux-amd64/ prometheus
    ```
 
-3. **Start Prometheus**
+5. **Create a directory for logging active queries and grant the Prometheus process permissions to write to this 
+   directory.**
    ```bash
-   cd prometheus-2.52.0.linux-amd64
+   sudo mkdir -p /home/vagrant/prometheus/data
+   sudo chown -R vagrant:vagrant /home/vagrant/prometheus/data
+   ```
+
+6. **Start Prometheus**
+   ```bash
+   cd prometheus
    ./prometheus --config.file=prometheus.yml &
    ```
-
+      
 ##### Alertmanager
 1. **Download Alertmanager**
    ```bash
@@ -130,16 +149,33 @@ cAdvisor is now running (in the background) on `http://localhost:8080` or `http:
    tar xvfz alertmanager-0.27.0.linux-amd64.tar.gz
    ```
 
-3. **Start Alertmanager**
+3. **Remove the downloaded tarball to clean up disk space**
    ```bash
-   cd alertmanager-0.27.0.linux-amd64
+   sudo rm alertmanager-0.27.0.linux-amd64.tar.gz
+   ```
+   
+4. **Rename the extracted directory to 'alertmanager' for easier access**
+   ```bash
+   sudo mv alertmanager-0.27.0.linux-amd64/ alertmanager
+   ```
+    
+5. **Create data directory for alertmanager and grant it permissions to write to it.**
+   ```bash
+   sudo mkdir -p alertmanager/data
+   sudo chown -R vagrant:vagrant alertmanager/data
+   ```   
+
+6. **Start Alertmanager**
+   ```bash
+   cd alertmanager
    ./alertmanager --config.file=alertmanager.yml &
    ```
 
 ##### Blackbox Exporter
 1. **Download Blackbox Exporter**
    ```bash
-   wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-0.25.0.linux-amd64.tar.gz
+   wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-0.25.0.linux- 
+   amd64.tar.gz
    ```
 
 2. **Extract Blackbox Exporter**
@@ -147,33 +183,48 @@ cAdvisor is now running (in the background) on `http://localhost:8080` or `http:
    tar xvfz blackbox_exporter-0.25.0.linux-amd64.tar.gz
    ```
 
-3. **Start Blackbox Exporter**
+3. **Remove the downloaded tarball to clean up disk space**
+   ```bash 
+   sudo rm blackbox_exporter-0.25.0.linux-amd64.tar.gz
+   ```
+
+4. **Rename the extracted directory to 'blackbox_exporter' for easier access**
    ```bash
-   cd blackbox_exporter-0.25.0.linux-amd64
+   sudo mv blackbox_exporter-0.25.0.linux-amd64/ blackbox_exporter
+   ```
+   
+5. **Start Blackbox Exporter**
+   ```bash
+   cd blackbox_exporter
    ./blackbox_exporter &
    ```
 
 ##### Grafana
 1. **Download Grafana**
-```bash
-wget https://dl.grafana.com/oss/release/grafana-11.1.3.linux-amd64.tar.gz
-```
+   ```bash
+   wget https://dl.grafana.com/oss/release/grafana-11.1.3.linux-amd64.tar.gz
+   ```
 
 2. **Extract Grafana**
-```bash 
-tar -zxvf grafana-11.1.3.linux-amd64.tar.gz
-```
+   ```bash 
+   tar -zxvf grafana-11.1.3.linux-amd64.tar.gz
+   ```
 
-3. **Start Grafana**
-```bash
-cd grafana-v11.1.3/
-./bin/grafana-server &
-```
-4. **Access Grafana in a Browser**
+3. **Remove the downloaded tarball to clean up disk space**
+   ```bash
+   sudo rm grafana-11.1.3.linux-amd64.tar.gz
+   ```
+   
+4. **Start Grafana**
+   ```bash
+   cd grafana-v11.1.3/
+   ./bin/grafana-server &
+   ```
+5. **Access Grafana in a Browser**
 Once Grafana is running, you can access the web UI by opening a web browser and navigating to:
-```bash
-http://localhost:3000
-```
+   ```bash
+   http://localhost:3000
+   ```
 If you're running Grafana on a remote server or a Vagrant machine, replace localhost with the server's IP address. Log in to Grafana. The default username is `admin`, and the default password is also `admin`.
 
 ### Notes:
